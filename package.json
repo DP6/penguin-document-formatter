@@ -1,0 +1,27 @@
+{
+  "name": "pdf-reader",
+  "version": "0.0.1",
+  "description": "Modulo 1 do data quality",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/*.test.js -w"
+  },
+  "author": "1cadumagalhaes",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "mocha": "^8.2.1"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DP6/Doc-Formatter-Penguin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DP6/Doc-Formatter-Penguin/issues"
+  },
+  "homepage": "https://github.com/DP6/Doc-Formatter-Penguin#readme"
+}

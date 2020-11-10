@@ -1,0 +1,16 @@
+sudo: false
+
+language: node_js
+
+node_js:
+  - 12.18.4
+
+install:
+  - npm i
+
+before_script:
+  - npm i -g gulp
+
+script:
+  - npm test
+
