@@ -1,0 +1,322 @@
+[
+  {
+    "x": 38.467,
+    "y": 1.219,
+    "text": "Elementos Comuns"
+  },
+  {
+    "x": 0.9690000000000001,
+    "y": 5.109,
+    "text": "V1 - T1"
+  },
+  {
+    "x": 35.258,
+    "y": 6.164,
+    "text": "Evento:"
+  },
+  {
+    "x": 45.43,
+    "y": 6.164,
+    "text": "page_view"
+  },
+  {
+    "x": 35.258,
+    "y": 7.757999999999999,
+    "text": "pageName:"
+  },
+  {
+    "x": 45.43,
+    "y": 7.757999999999999,
+    "text": "[path-da-pagina]"
+  },
+  {
+    "x": 35.258,
+    "y": 9.352,
+    "text": "Indice"
+  },
+  {
+    "x": 39.148,
+    "y": 9.352,
+    "text": "Escopo"
+  },
+  {
+    "x": 43.789,
+    "y": 9.352,
+    "text": "Nome da Custom"
+  },
+  {
+    "x": 53.352,
+    "y": 9.352,
+    "text": "Exemplo"
+  },
+  {
+    "x": 35.258,
+    "y": 10.945,
+    "text": "1"
+  },
+  {
+    "x": 39.148,
+    "y": 10.945,
+    "text": "Hit"
+  },
+  {
+    "x": 43.789,
+    "y": 10.945,
+    "text": "Idioma do site"
+  },
+  {
+    "x": 53.352,
+    "y": 10.945,
+    "text": "pt"
+  },
+  {
+    "x": 17.141,
+    "y": 11.203,
+    "text": "Header"
+  },
+  {
+    "x": 6.43,
+    "y": 16.242,
+    "text": "Evento:"
+  },
+  {
+    "x": 16.508,
+    "y": 16.242,
+    "text": "nav_bar"
+  },
+  {
+    "x": 71.961,
+    "y": 16.242,
+    "text": "Evento:"
+  },
+  {
+    "x": 80.633,
+    "y": 16.242,
+    "text": "nav_bar"
+  },
+  {
+    "x": 6.43,
+    "y": 17.695,
+    "text": "eventCategory:"
+  },
+  {
+    "x": 16.508,
+    "y": 17.695,
+    "text": "menu"
+  },
+  {
+    "x": 71.961,
+    "y": 17.695,
+    "text": "eventCategory:"
+  },
+  {
+    "x": 80.633,
+    "y": 17.695,
+    "text": "menu"
+  },
+  {
+    "x": 6.43,
+    "y": 19.195,
+    "text": "eventAction:"
+  },
+  {
+    "x": 16.508,
+    "y": 19.195,
+    "text": "clicou"
+  },
+  {
+    "x": 71.961,
+    "y": 19.195,
+    "text": "eventAction:"
+  },
+  {
+    "x": 80.633,
+    "y": 19.195,
+    "text": "selecionou"
+  },
+  {
+    "x": 6.43,
+    "y": 20.695,
+    "text": "eventLabel:"
+  },
+  {
+    "x": 16.508,
+    "y": 20.695,
+    "text": "blog"
+  },
+  {
+    "x": 71.961,
+    "y": 20.695,
+    "text": "eventLabel:"
+  },
+  {
+    "x": 80.633,
+    "y": 20.695,
+    "text": "[idioma]"
+  },
+  {
+    "x": 72.594,
+    "y": 23.578,
+    "text": "A variável [idioma] deverá ser substituída pela sigla do"
+  },
+  {
+    "x": 72.594,
+    "y": 24.281,
+    "text": "idioma. Ex.: en ou pt."
+  },
+  {
+    "x": 17.141,
+    "y": 29.062,
+    "text": "Footer"
+  },
+  {
+    "x": 71.961,
+    "y": 30.117,
+    "text": "Evento:"
+  },
+  {
+    "x": 80.211,
+    "y": 30.117,
+    "text": "footer"
+  },
+  {
+    "x": 71.961,
+    "y": 31.57,
+    "text": "eventCategory:"
+  },
+  {
+    "x": 80.211,
+    "y": 31.57,
+    "text": "rodape"
+  },
+  {
+    "x": 5.633,
+    "y": 32.648,
+    "text": "Evento:"
+  },
+  {
+    "x": 18.148,
+    "y": 32.648,
+    "text": "banner"
+  },
+  {
+    "x": 71.961,
+    "y": 33.07,
+    "text": "eventAction:"
+  },
+  {
+    "x": 80.211,
+    "y": 33.07,
+    "text": "clicou"
+  },
+  {
+    "x": 5.633,
+    "y": 34.102,
+    "text": "eventCategory:"
+  },
+  {
+    "x": 18.148,
+    "y": 34.102,
+    "text": "banner"
+  },
+  {
+    "x": 71.961,
+    "y": 34.57,
+    "text": "eventLabel:"
+  },
+  {
+    "x": 80.211,
+    "y": 34.57,
+    "text": "[rede-social]"
+  },
+  {
+    "x": 5.633,
+    "y": 35.602,
+    "text": "eventAction:"
+  },
+  {
+    "x": 18.148,
+    "y": 35.602,
+    "text": "clicou"
+  },
+  {
+    "x": 5.633,
+    "y": 37.102,
+    "text": "eventLabel:"
+  },
+  {
+    "x": 18.148,
+    "y": 37.102,
+    "text": "parceiro"
+  },
+  {
+    "x": 72.594,
+    "y": 37.594,
+    "text": "A variável [nome-da-pagina] deverá ser substituída pelo"
+  },
+  {
+    "x": 72.594,
+    "y": 38.297,
+    "text": "nome da rede social associada ao ícone. Ex.: servicos,"
+  },
+  {
+    "x": 5.633,
+    "y": 38.648,
+    "text": "Indice"
+  },
+  {
+    "x": 8.117,
+    "y": 38.648,
+    "text": "Escopo"
+  },
+  {
+    "x": 11.07,
+    "y": 38.648,
+    "text": "Nome da Custom"
+  },
+  {
+    "x": 17.211,
+    "y": 38.648,
+    "text": "Exemplo"
+  },
+  {
+    "x": 72.594,
+    "y": 39,
+    "text": "cases."
+  },
+  {
+    "x": 5.633,
+    "y": 40.242,
+    "text": "2"
+  },
+  {
+    "x": 8.117,
+    "y": 40.242,
+    "text": "Hit"
+  },
+  {
+    "x": 11.07,
+    "y": 40.242,
+    "text": "Parceiro"
+  },
+  {
+    "x": 17.211,
+    "y": 40.242,
+    "text": "Google Marketing Cloud"
+  },
+  {
+    "x": 72.594,
+    "y": 40.406,
+    "text": "A variável [rede-social] deverá ser substituída pelo nome"
+  },
+  {
+    "x": 72.594,
+    "y": 41.109,
+    "text": "da rede social associada ao ícone. Ex.: facebook,"
+  },
+  {
+    "x": 72.594,
+    "y": 41.812,
+    "text": "instagram."
+  }
+]

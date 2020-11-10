@@ -1,0 +1,15 @@
+{
+  "name": "convert-pdf-to-json",
+  "version": "0.0.1",
+  "description": "Uses pdf2json to extract text with x and y coordinates from a pdf file",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/storage": "^5.4.0",
+    "pdf2json": "^1.2.0"
+  }
+}
