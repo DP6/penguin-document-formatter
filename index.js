@@ -29,8 +29,7 @@ async function main(argv) {
         files.forEach(function (file, index) {
             let content = fs.readFileSync(file, { encoding: 'utf-8' });
             let extraction = extractEvents(content);
-
-            if (extraction.length > 0) pages.push(extraction);
+            if (extraction.events.length > 0) pages.push(extraction);
         });
 
         pages.forEach((page) => {
