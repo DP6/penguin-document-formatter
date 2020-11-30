@@ -1,8 +1,10 @@
 const { strictEqual, deepStrictEqual, ok } = require('assert');
 const path = require('path');
+
 const { pdfToJson } = require('../src/pdf2text');
 
 const MAPA = { path: path.basename('../sitedp6.pdf'), paginas: 3 };
+
 const CHAVES = ['x', 'y', 'text'];
 
 let dados;

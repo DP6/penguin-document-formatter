@@ -1,7 +1,8 @@
 const { strictEqual, deepStrictEqual, ok } = require('assert');
 const path = require('path');
-const { saveFile } = require('../src/saveFile');
 const fs = require('fs');
+
+const { saveFile } = require('../src/saveFile');
 
 const dir = './tmp/';
 const NOME = dir + 'temporario.txt';

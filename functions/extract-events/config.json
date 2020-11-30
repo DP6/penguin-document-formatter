@@ -1,0 +1,22 @@
+{
+    "event": {
+        "numParams": 2,
+        "key": 0,
+        "value": 1,
+        "title": [
+            "Evento",
+            "Pageview"
+        ]
+    },
+    "customDimension": {
+        "numParams": 4,
+        "key": 2,
+        "value": 3,
+        "title": [
+            "Indice",
+            "Escopo",
+            "Nome da Custom",
+            "Exemplo"
+        ]
+    }
+}
