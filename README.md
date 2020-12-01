@@ -1,5 +1,7 @@
 # Document Formatter Penguin
 
+[![Build Status](https://travis-ci.org/DP6/Doc-Formatter-Penguin.svg?branch=main)](https://travis-ci.org/DP6/Doc-Formatter-Penguin)
+
 Solução desenvolvida para a leitura estruturada de PDFs.
 
 ## Dependências
