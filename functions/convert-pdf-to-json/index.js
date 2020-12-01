@@ -24,7 +24,7 @@ exports.extractText = async function extractText(object, context) {
 
         const data = await pdfToJson(tempFilePath);
 
-
+        //TODO salvar os arquivos output_x_to_y.json no GCS
     } catch (error) {
         console.error("ERRO!", error);
     }

@@ -12,5 +12,5 @@ before_script:
   - npm i -g gulp
 
 script:
-  - npm test
+  - gulp build
 
