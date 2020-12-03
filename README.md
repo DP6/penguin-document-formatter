@@ -42,6 +42,4 @@ Os testes são configurados pra funcionar com o modelo de mapa que está na raiz
 
 ## Próximos passos
 
-- Finalizar a consolidação de eventos no BigQuery
-- Implementar as duas cloud functions
 - Acrescentar o processo de release, exportando o conteúdo das functions em .zip

@@ -2,13 +2,11 @@
   "name": "extract-events",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
+  "author": "DP6",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@google-cloud/bigquery": "^5.5.0"
+    "@google-cloud/bigquery": "^5.5.0",
+    "@google-cloud/storage": "^5.6.0"
   }
 }

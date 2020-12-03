@@ -31,9 +31,9 @@ async function main(argv) {
             //TODO consolidar eventos
             console.log("\n=======================\n");
             console.log("PAGEVIEW:\n");
-            console.table(pageview);
+            console.log(pageview);
             console.log("\nEVENTS:\n");
-            console.table(eventos);
+            console.log(eventos);
             console.log("\n=======================\n");/**/
         });
 
