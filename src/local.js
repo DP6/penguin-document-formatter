@@ -9,17 +9,18 @@ module.exports = {
     saveAllFiles: saveAllFiles
 }
 
-function getEvents_local(files, config = null) {
+function getEvents_local(files, nomeMapa, config = null) {
     let pages = [];
     let pageNumber = 1
     files.forEach(function (file, index) {
         let content = fs.readFileSync(file, { encoding: 'utf-8' });
+        
         let extraction;
        
         if (config != null)
-            extraction = extractEvents(content, pageNumber, config);
+            extraction = extractEvents(content, pageNumber, nomeMapa, config);
         else
-            extraction = extractEvents(content, pageNumber);
+            extraction = extractEvents(content, pageNumber, nomeMapa);
         pageNumber++
         if (extraction.events.length > 0) pages.push(extraction);
     });
