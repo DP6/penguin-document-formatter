@@ -16,24 +16,29 @@ async function main(argv) {
 
         console.info("Extraindo texto do arquivo", file);
         const data = await pdfToJson(file);
-
+        
         const files = saveAllFiles(file, data);
-
+        
         let pages = getEvents_local(files);
 
-        console.log(`extraidas ${pages.length} paginas`);
+        let nomeMapa = file.split(".pdf")[0];
+        console.log("\n----------------------------------------------------\n")
+        console.log(`Nome do mapa: ${nomeMapa}`)
+        console.log(`Número de páginas: ${files.length}`)
+        console.log(`Número de páginas extraidas: ${pages.length} paginas`);
+        console.log("\n----------------------------------------------------\n")
 
         pages.forEach((page, index) => {
             let { info, events } = page;
-            console.log(`pagina ${index} com ${page.events.length} eventos`)
+            console.log(`pagina ${info.pageNumber} com ${page.events.length} eventos`)
 
             let { pageview, eventos } = formatEvents(events, info, index);
             //TODO consolidar eventos
             console.log("\n=======================\n");
             console.log("PAGEVIEW:\n");
-            console.log(pageview);
+            console.table(pageview);
             console.log("\nEVENTS:\n");
-            console.log(eventos);
+            console.table(eventos);
             console.log("\n=======================\n");/**/
         });
 
