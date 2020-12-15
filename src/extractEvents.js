@@ -1,10 +1,10 @@
 const config_file = require('./config.json');
 
 exports.extractEvents = extractEventsFromJson;
-function extractEventsFromJson(content, config = config_file) {
+function extractEventsFromJson(content, pageNumber, config = config_file) {
     let pages = JSON.parse(content);
     let groups = groupTexts(pages);
-    let { info, events } = groupEvents(groups, config);
+    let { info, events } = groupEvents(groups, pageNumber, config);
     return { info, events };
 }
 
@@ -40,7 +40,34 @@ function groupTexts(texts, limitX = 20, limitY = 0.05) {
     return groups;
 }
 
-function groupEvents(groups, { event, customDimension }) {
+function mergeRow(group, limit = 0) {
+    let copy = [];
+    let temp = null;
+    const size = (56.67 - 54.955) / 6;
+    for (i in group) {
+        if (temp === null) temp = group[i];
+        const item = temp;
+        if (i == group.length - 1) {
+            copy.push(item);
+            temp = null;
+            continue;
+        }
+        const j = +i + 1;
+        const next = group[j];
+        let dif = next.x - item.x - item.text.length * size;
+        if (dif > limit) {
+            copy.push(item);
+            temp = null;
+        }
+        else {
+            const concat = item.text + next.text;
+            temp = { ...item, text: concat };
+        }
+    }
+    return copy;
+}
+
+function groupEvents(groups, pageNumber, { event, customDimension }) {
     let regex = /(V\d+)\s-\s(T\d+)/;
     let regexTitle = new RegExp(event.title.join('|'), 'i');
     let pagina = groups[0][0].text || '';
@@ -57,16 +84,28 @@ function groupEvents(groups, { event, customDimension }) {
 
     let info = {
         page: pagina,
+        pageNumber: pageNumber,
         version: versao,
         screen: tela,
     };
     if (versao == 'VX') return { info, events: [] };
-    let page = groups.slice(2).sort((a, b) => a[0].x - b[0].x);
-
+    
+    var indx = 0; 
+    for(var x of groups){
+        if(x[0].text == "Pageview:"){
+            break;
+        }else{
+            indx++
+        }
+    }
+    let page = groups.slice(indx).sort((a, b) => a[0].x - b[0].x);
+    page = page.map(group => mergeRow(group));
+    
     let events = [],
         e = [];
-
+    
     for (item of page) {
+        
         if (item.length == event.numParams) {
 
             item = {
@@ -75,15 +114,7 @@ function groupEvents(groups, { event, customDimension }) {
                 x: item[event.key].x,
                 y: item[event.key].y,
             };
-        }
-        else if (item.length == customDimension.numParams)
-            item = {
-                key: item[customDimension.key].text,
-                value: item[customDimension.value].text,
-                x: item[event.key].x,
-                y: item[event.key].y,
-            };
-        else continue;
+        }else continue;
 
         if (regexTitle.test(item.key)) {
             e = [];
@@ -93,7 +124,6 @@ function groupEvents(groups, { event, customDimension }) {
 
         if (customDimension.title.indexOf(item.key) == -1) e.push(item);
     }
-
     events = events
         .sort((a, b) => a[0].y - b[0].y)
         .map((item) =>
@@ -101,13 +131,6 @@ function groupEvents(groups, { event, customDimension }) {
                 return { key, value };
             })
         );
-    if (events.length > 0) {
-        events.map((event, i) => event.map((item, j) => {
-            if (i != 0 && item.key == "Pageview:")
-                console.log('oi', item)
-        }
-        ))
-    }
     //console.log("=========",events, "=============");
     return { info, events };
 }
