@@ -1,10 +1,11 @@
 const config_file = require('./config.json');
 
 exports.extractEvents = extractEventsFromJson;
-function extractEventsFromJson(content, pageNumber, config = config_file) {
+function extractEventsFromJson(content, pageNumber, nomeMapa, config = config_file) {
     let pages = JSON.parse(content);
+    
     let groups = groupTexts(pages);
-    let { info, events } = groupEvents(groups, pageNumber, config);
+    let { info, events } = groupEvents(groups, pageNumber, nomeMapa, config);
     return { info, events };
 }
 
@@ -67,7 +68,7 @@ function mergeRow(group, limit = 0) {
     return copy;
 }
 
-function groupEvents(groups, pageNumber, { event, customDimension }) {
+function groupEvents(groups, pageNumber, nomeMapa, { event, customDimension }) {
     let regex = /(V\d+)\s-\s(T\d+)/;
     let regexTitle = new RegExp(event.title.join('|'), 'i');
     let pagina = groups[0][0].text || '';
@@ -83,7 +84,7 @@ function groupEvents(groups, pageNumber, { event, customDimension }) {
         : [0, 'VX', 'TX'];
 
     let info = {
-        page: pagina,
+        name: nomeMapa,
         pageNumber: pageNumber,
         version: versao,
         screen: tela,
