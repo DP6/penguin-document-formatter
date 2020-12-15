@@ -1,6 +1,6 @@
 exports.formatEvents = formatEvents;
 
-function formatEvents(events, info, pagina) {
+function formatEvents(events, info) {
     let pageview, eventos;
     
     pageview = events.filter((item) => /pageview/i.test(item[0].key) || /page_view/.test(item[0].value))
@@ -17,8 +17,8 @@ function formatEvents(events, info, pagina) {
             pagename: item.value,
             versao: info.version,
             tela: info.screen,
-            pagina_mapa: pagina,
-            nome_mapa: info.page
+            pagina_mapa: info.pageNumber,
+            nome_mapa: info.name
         }
     }) : null;
     
@@ -34,8 +34,8 @@ function formatEvents(events, info, pagina) {
                 pagename: pagePath,
                 versao: info.version,
                 tela: info.screen,
-                pagina_mapa: pagina,
-                nome_mapa: info.page
+                pagina_mapa: info.pageNumber,
+                nome_mapa: info.name
             }
         }else{
             return null;
