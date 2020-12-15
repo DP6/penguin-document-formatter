@@ -11,14 +11,16 @@ module.exports = {
 
 function getEvents_local(files, config = null) {
     let pages = [];
-
+    let pageNumber = 1
     files.forEach(function (file, index) {
         let content = fs.readFileSync(file, { encoding: 'utf-8' });
         let extraction;
+       
         if (config != null)
-            extraction = extractEvents(content, config);
+            extraction = extractEvents(content, pageNumber, config);
         else
-            extraction = extractEvents(content);
+            extraction = extractEvents(content, pageNumber);
+        pageNumber++
         if (extraction.events.length > 0) pages.push(extraction);
     });
     return pages;
