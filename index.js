@@ -15,13 +15,15 @@ async function main(argv) {
             throw new Error('Informe um arquivo .pdf ');
 
         console.info("Extraindo texto do arquivo", file);
+        
+        let nomeMapa = file.split(".pdf")[0];
+
         const data = await pdfToJson(file);
         
         const files = saveAllFiles(file, data);
         
-        let pages = getEvents_local(files);
-
-        let nomeMapa = file.split(".pdf")[0];
+        let pages = getEvents_local(files, nomeMapa);
+        
         console.log("\n----------------------------------------------------\n")
         console.log(`Nome do mapa: ${nomeMapa}`)
         console.log(`Número de páginas: ${files.length}`)
@@ -32,7 +34,7 @@ async function main(argv) {
             let { info, events } = page;
             console.log(`pagina ${info.pageNumber} com ${page.events.length} eventos`)
 
-            let { pageview, eventos } = formatEvents(events, info, index);
+            let { pageview, eventos } = formatEvents(events, info);
             //TODO consolidar eventos
             console.log("\n=======================\n");
             console.log("PAGEVIEW:\n");
