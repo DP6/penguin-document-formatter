@@ -3,7 +3,7 @@ const config_file = require('./config.json');
 exports.extractEvents = extractEventsFromJson;
 function extractEventsFromJson(content, pageNumber, nomeMapa, config = config_file) {
     let pages = JSON.parse(content);
-    
+
     let groups = groupTexts(pages);
     let { info, events } = groupEvents(groups, pageNumber, nomeMapa, config);
     return { info, events };
@@ -71,6 +71,7 @@ function mergeRow(group, limit = 0) {
 function groupEvents(groups, pageNumber, nomeMapa, { event, customDimension }) {
     let regex = /(V\d+)\s-\s(T\d+)/;
     let regexTitle = new RegExp(event.title.join('|'), 'i');
+    let regexCd = new RegExp(customDimension.title.join('|'), 'i');
     let pagina = groups[0][0].text || '';
     let infos_mapa = null;
     groups.forEach(
@@ -90,23 +91,26 @@ function groupEvents(groups, pageNumber, nomeMapa, { event, customDimension }) {
         screen: tela,
     };
     if (versao == 'VX') return { info, events: [] };
-    
-    var indx = 0; 
-    for(var x of groups){
-        if(x[0].text == "Pageview:"){
+
+    let pageviewRegex = new RegExp([event.title[1]], 'i');
+
+    let index = groups.findIndex(group => group.length > 1 && (pageviewRegex.test(group[0].text) || /pag/i.test(group[1].text)));
+    /*var indx = 0;
+    for (var x of groups) {
+        if (x[0].text == "Pageview:") {
             break;
-        }else{
+        } else {
             indx++
         }
-    }
-    let page = groups.slice(indx).sort((a, b) => a[0].x - b[0].x);
+    }*/
+
+    let page = groups.slice(index).sort((a, b) => a[0].x - b[0].x);
     page = page.map(group => mergeRow(group));
-    
+
     let events = [],
         e = [];
-    
+
     for (item of page) {
-        
         if (item.length == event.numParams) {
 
             item = {
@@ -115,7 +119,14 @@ function groupEvents(groups, pageNumber, nomeMapa, { event, customDimension }) {
                 x: item[event.key].x,
                 y: item[event.key].y,
             };
-        }else continue;
+        } else if (item.length == customDimension.numParams) {
+            item = {
+                key: item[customDimension.key].text,
+                value: item[customDimension.value].text,
+                x: item[customDimension.key].x,
+                y: item[customDimension.key].y,
+            };
+        } else continue;
 
         if (regexTitle.test(item.key)) {
             e = [];
