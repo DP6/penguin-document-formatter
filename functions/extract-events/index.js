@@ -5,17 +5,16 @@ const os = require('os');
 const { Storage } = require('@google-cloud/storage');
 const storage = new Storage();
 
-const { BigQuery } = require('@google-cloud/bigquery');
-const bigquery = new BigQuery();
-
 const { extractEvents } = require('./extractEvents');
 const { formatEvents } = require('./formatEvents');
+const { get } = require('./hub');
+const { insertRowsAsStream } = require('./bigquery');
 
 exports.extractEvents = async function (event, context) {
 
     try {
-
-        const datasetId = 'dq_raft_suite', eventsTableId = 'eventos', pageviewsTableId = 'pageviews';
+        const { dataset, tables } = await get("raft-suite/config");
+        const schemas = await get('raft-suite/schemas');
 
         const { bucket, name } = event;
 
@@ -37,19 +36,23 @@ exports.extractEvents = async function (event, context) {
             let { info, events } = page;
             let { pageview, eventos } = formatEvents(events, info, index);
             console.info('Info', `Consolidando ${pageview.length} pageview com ${eventos.length} eventos`);
-            const dataset = bigquery.dataset(datasetId);
-
-            await dataset.table(pageviewsTableId).insert(pageview);
-
-            await dataset.table(eventsTableId).insert(eventos);
+            await insertRowsAsStream([pageview], dataset, tables.pageview, schemas.pageviews);
+            await insertRowsAsStream(events, dataset, tables.events, schemas.events);
+            //rows, datasetId, tableName, schema
         }
-
         fs.unlinkSync(tempFilePath);
-
         /**/
 
     } catch (error) {
         console.error(error);
+        publishAlert({
+            jobId: "",
+            code: 505,
+            message: "Erro ao consolidar os dados no bigquery",
+            document: fileName.split('.pdf')[0],
+            page: '-',
+            version: '-'
+        });
     }
 }
 

@@ -5,10 +5,13 @@ const { Storage } = require('@google-cloud/storage');
 const storage = new Storage();
 
 const { pdfToJson } = require('./pdf2text');
+const { publishAlert } = require('./hub');
 
 exports.extractText = async function extractText(event, context) {
     try {
         const { bucket, name } = event;
+
+        const filePath = name.split(".pdf")[0];
 
         if (!/\.pdf/i.test(name))
             throw new Error(`O arquivo ${name} não é um pdf`);
@@ -26,8 +29,6 @@ exports.extractText = async function extractText(event, context) {
 
         const bucketJson = 'dq-doc-formatter-json-csf';
         const size = data.length;
-        const filePath = name.split(".pdf")[0];
-
         data.forEach(
             async (file, index) => {
                 try {
@@ -36,10 +37,36 @@ exports.extractText = async function extractText(event, context) {
                     console.log("Info", `${newFilePath} created to ${bucketJson}.`);
                 } catch (error) {
                     console.error(error);
+                    const page = (index + 1).toLocaleString(undefined, { minimumIntegerDigits: 2 })
+                    publishAlert({
+                        jobId: "",
+                        code: 501,
+                        message: "Erro ao converter a página para json.",
+                        document: filePath,
+                        page: page,
+                        version: '-'
+                    });
+                    //{ jobId, code, message, document, page, version }
                 }
             }
         );
+        publishAlert({
+            jobId: "",
+            code: 200,
+            message: "Arquivo convertido com sucesso.",
+            document: filePath,
+            page: page,
+            version: '-'
+        });
     } catch (error) {
-        console.error("ERRO!", error);
+        console.error(error);
+        publishAlert({
+            jobId: "",
+            code: 500,
+            message: "Erro ao processar o pdf.",
+            document: filePath,
+            page: '-',
+            version: '-'
+        });
     }
 }
