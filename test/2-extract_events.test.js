@@ -35,7 +35,7 @@ describe('Extrair eventos', function () {
 
         files = saveAllFiles(FILE, data);
 
-        pages = getEvents_local(files, config);
+        pages = getEvents_local(files, FILE, config);
     });
 
     it("Extrai uma página com eventos do pdf", () => {
