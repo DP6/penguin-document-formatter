@@ -22,7 +22,7 @@ async function main(argv) {
 
         const files = saveAllFiles(file, data);
 
-        let pages = getEvents_local(files, nomeMapa);
+        let pages = await getEvents_local(files, nomeMapa);
 
         console.log("\n----------------------------------------------------\n")
         console.log(`Nome do mapa: ${nomeMapa}`)

@@ -10,6 +10,8 @@ module.exports = {
 }
 
 function getEvents_local(files, nomeMapa, config = null) {
+    if (config == null)
+        config = require('./config.json');
     let pages = [];
     let pageNumber = 0;
     files.forEach(async function (file, index) {
