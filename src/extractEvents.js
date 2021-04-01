@@ -2,12 +2,16 @@ const { get } = require('./firestore');
 
 exports.extractEvents = extractEventsFromJson;
 async function extractEventsFromJson(content, pageNumber, nomeMapa, config = "") {
-    if (config === "")
-        config = await get("raft-suite/config");
-    let pages = JSON.parse(content);
-    let groups = groupTexts(pages);
-    let { info, events } = groupEvents(groups, pageNumber, nomeMapa, config);
-    return { info, events };
+    try {
+        if (config === "")
+            config = await get("raft-suite/config");
+        let pages = JSON.parse(content);
+        let groups = groupTexts(pages);
+        let { info, events } = groupEvents(groups, pageNumber, nomeMapa, config);
+        return { info, events };
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 function groupTexts(texts, limitX = 20, limitY = 0.05) {
