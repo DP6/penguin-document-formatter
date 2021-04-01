@@ -11,17 +11,11 @@ module.exports = {
 
 function getEvents_local(files, nomeMapa, config = null) {
     let pages = [];
-    let pageNumber = 1
-    files.forEach(function (file, index) {
+    let pageNumber = 0;
+    files.forEach(async function (file, index) {
         let content = fs.readFileSync(file, { encoding: 'utf-8' });
-        
-        let extraction;
-       
-        if (config != null)
-            extraction = extractEvents(content, pageNumber, nomeMapa, config);
-        else
-            extraction = extractEvents(content, pageNumber, nomeMapa);
-        pageNumber++
+        pageNumber++;
+        let extraction = await extractEvents(content, pageNumber, nomeMapa, config);
         if (extraction.events.length > 0) pages.push(extraction);
     });
     return pages;
