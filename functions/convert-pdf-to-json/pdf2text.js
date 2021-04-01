@@ -27,7 +27,16 @@ function getPdfData(path) {
 
 
 function formatJson(pdfData) {
-    let json = JSON.parse(decodeURIComponent(JSON.stringify(pdfData, null, 2)));
+    let string = decodeURIComponent(JSON.stringify(pdfData, null, 2));
+    const regex = /"T": "(.*)("(.*)")(.*)"/g, replaceText = '"T": "$1\'$3\'$4"',
+        regexSimple = /"T": "(.*)(")(.*)"/g, replaceTextSimple = '"T": "$1\'$3"';
+    while (regex.test(string)) {
+        string = string.replace(regex, replaceText);
+    }
+    while (regexSimple.test(string)) {
+        string = string.replace(regexSimple, replaceTextSimple);
+    }
+    let json = JSON.parse(string);
     let pages = json['formImage']['Pages'];
     pages = pages
         .map((page) => {
