@@ -18,5 +18,10 @@
             "Nome da Custom",
             "Exemplo"
         ]
-    }
+    },
+    "topicName": "projects/dp6-estudos/topics/cadu",
+    "datasetId": "dq-raft-suite",
+    "hub": "status_hub",
+    "events:": "events",
+    "pageviews": "pageviews"
 }
