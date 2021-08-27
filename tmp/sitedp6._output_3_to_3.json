@@ -12,7 +12,7 @@
   {
     "x": 35.258,
     "y": 6.164,
-    "text": "Evento:"
+    "text": "Evento"
   },
   {
     "x": 45.43,
@@ -22,7 +22,7 @@
   {
     "x": 35.258,
     "y": 7.757999999999999,
-    "text": "pageName:"
+    "text": "pageName"
   },
   {
     "x": 45.43,
@@ -77,7 +77,7 @@
   {
     "x": 6.43,
     "y": 16.242,
-    "text": "Evento:"
+    "text": "Evento"
   },
   {
     "x": 16.508,
@@ -87,7 +87,7 @@
   {
     "x": 71.961,
     "y": 16.242,
-    "text": "Evento:"
+    "text": "Evento"
   },
   {
     "x": 80.633,
@@ -97,7 +97,7 @@
   {
     "x": 6.43,
     "y": 17.695,
-    "text": "eventCategory:"
+    "text": "eventCategory"
   },
   {
     "x": 16.508,
@@ -107,7 +107,7 @@
   {
     "x": 71.961,
     "y": 17.695,
-    "text": "eventCategory:"
+    "text": "eventCategory"
   },
   {
     "x": 80.633,
@@ -117,7 +117,7 @@
   {
     "x": 6.43,
     "y": 19.195,
-    "text": "eventAction:"
+    "text": "eventAction"
   },
   {
     "x": 16.508,
@@ -127,7 +127,7 @@
   {
     "x": 71.961,
     "y": 19.195,
-    "text": "eventAction:"
+    "text": "eventAction"
   },
   {
     "x": 80.633,
@@ -137,7 +137,7 @@
   {
     "x": 6.43,
     "y": 20.695,
-    "text": "eventLabel:"
+    "text": "eventLabel"
   },
   {
     "x": 16.508,
@@ -147,7 +147,7 @@
   {
     "x": 71.961,
     "y": 20.695,
-    "text": "eventLabel:"
+    "text": "eventLabel"
   },
   {
     "x": 80.633,
@@ -162,7 +162,7 @@
   {
     "x": 72.594,
     "y": 24.281,
-    "text": "idioma. Ex.: en ou pt."
+    "text": "idioma. Ex. en ou pt."
   },
   {
     "x": 17.141,
@@ -172,7 +172,7 @@
   {
     "x": 71.961,
     "y": 30.117,
-    "text": "Evento:"
+    "text": "Evento"
   },
   {
     "x": 80.211,
@@ -182,7 +182,7 @@
   {
     "x": 71.961,
     "y": 31.57,
-    "text": "eventCategory:"
+    "text": "eventCategory"
   },
   {
     "x": 80.211,
@@ -192,7 +192,7 @@
   {
     "x": 5.633,
     "y": 32.648,
-    "text": "Evento:"
+    "text": "Evento"
   },
   {
     "x": 18.148,
@@ -202,7 +202,7 @@
   {
     "x": 71.961,
     "y": 33.07,
-    "text": "eventAction:"
+    "text": "eventAction"
   },
   {
     "x": 80.211,
@@ -212,7 +212,7 @@
   {
     "x": 5.633,
     "y": 34.102,
-    "text": "eventCategory:"
+    "text": "eventCategory"
   },
   {
     "x": 18.148,
@@ -222,7 +222,7 @@
   {
     "x": 71.961,
     "y": 34.57,
-    "text": "eventLabel:"
+    "text": "eventLabel"
   },
   {
     "x": 80.211,
@@ -232,7 +232,7 @@
   {
     "x": 5.633,
     "y": 35.602,
-    "text": "eventAction:"
+    "text": "eventAction"
   },
   {
     "x": 18.148,
@@ -242,7 +242,7 @@
   {
     "x": 5.633,
     "y": 37.102,
-    "text": "eventLabel:"
+    "text": "eventLabel"
   },
   {
     "x": 18.148,
@@ -257,7 +257,7 @@
   {
     "x": 72.594,
     "y": 38.297,
-    "text": "nome da rede social associada ao ícone. Ex.: servicos,"
+    "text": "nome da rede social associada ao ícone. Ex. servicos,"
   },
   {
     "x": 5.633,
@@ -312,7 +312,7 @@
   {
     "x": 72.594,
     "y": 41.109,
-    "text": "da rede social associada ao ícone. Ex.: facebook,"
+    "text": "da rede social associada ao ícone. Ex. facebook,"
   },
   {
     "x": 72.594,

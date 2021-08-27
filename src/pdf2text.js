@@ -2,11 +2,39 @@ const PDFParser = require('pdf2json');
 
 exports.pdfToJson = async function pdfToJson(path) {
     try {
-        let data = await getPdfData(path)
+        let data = await getPdfData(path);
         return data;
     } catch (error) {
         console.error('Erro: ', error.message);
     }
+}
+
+
+function mergeRow(group, limit = 0) {
+    let copy = [];
+    let temp = null;
+    const size = (56.67 - 54.955) / 6;
+    for (var i in group) {
+        if (temp === null) temp = group[i];
+        const item = temp;
+        if (i == group.length - 1) {
+            copy.push(item);
+            temp = null;
+            continue;
+        }
+        const j = +i + 1;
+        const next = group[j];
+        let dif = next.x - item.x - item.text.length * size;
+        if (dif > limit) {
+            copy.push(item);
+            temp = null;
+        }
+        else {
+            const concat = item.text + next.text;
+            temp = { ...item, text: concat };
+        }
+    }
+    return copy;
 }
 
 function getPdfData(path) {
@@ -45,7 +73,7 @@ function formatJson(pdfData) {
                 return {
                     x: text.x,
                     y: text.y,
-                    text: text.R.map((r) => r.T).join(''),
+                    text: text.R.map((r) => r.T).join('').replace(':', ''),
                 };
             });
             return texts;
