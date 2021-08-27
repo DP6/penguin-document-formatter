@@ -28,8 +28,8 @@ function groupTexts(texts, limitX = 20, limitY = 0.05) {
             continue;
         } else {
             if (
-                actual.y - previous.y <= limitY &&
-                actual.x - previous.x <= limitX
+                Math.abs(actual.y - previous.y) <= limitY &&
+                Math.abs(actual.x - previous.x) <= limitX
             ) {
                 group.push(actual);
             } else {
@@ -39,17 +39,15 @@ function groupTexts(texts, limitX = 20, limitY = 0.05) {
                 if (i == texts.length - 1 || i == texts.length - 2) groups.push(group);
                 continue;
             }
-
         }
     }
-
     return groups;
 }
 
 function mergeRow(group, limit = 0) {
     let copy = [];
     let temp = null;
-    const size = (56.67 - 54.955) / 6;
+    const size = (30.174 - 28.18) / 4;
     for (var i in group) {
         if (temp === null) temp = group[i];
         const item = temp;
@@ -74,9 +72,16 @@ function mergeRow(group, limit = 0) {
 }
 
 function groupEvents(groups, pageNumber, nomeMapa, { event, customDimension }) {
+
+    let newConfig = {
+        eventTitle: "Evento",
+        pageviewTitle: "(page|screen)(name)?$",
+        parameters: 2
+    };
+
     try {
         let regex = /(V\d+)\s-\s(T\d+)/;
-        let regexTitle = new RegExp(event.title.join('|'), 'i');
+        let regexTitle = new RegExp(`^${newConfig.eventTitle}\$`, 'i');
         let infos_mapa = null;
         groups.forEach(
             (group) => group.forEach(
@@ -96,50 +101,36 @@ function groupEvents(groups, pageNumber, nomeMapa, { event, customDimension }) {
             screen: tela,
         };
         if (versao == 'VX') return { info, events: [] };
+        let pageviewRegex = new RegExp([newConfig.pageviewTitle], 'i');
+        groups = groups.map(group => mergeRow(group))
+            .filter(group => group.length == newConfig.parameters);
 
-        let pageviewRegex = new RegExp([event.title[1]], 'i');
-        groups = groups.map(group => mergeRow(group));
-        let index = groups.findIndex(group => group.length > 1 && (pageviewRegex.test(group[0].text) || /pag/i.test(group[1].text)));
-        index = index === -1 ? 0 : index;
+        let index = groups.findIndex(group =>
+            group.length > 1 &&
+            (pageviewRegex.test(group[0].text) ||
+                pageviewRegex.test(group[1].text)));
+
+        index = index === -1 ? 0 : index + 1;
         let page = groups.slice(index).sort((a, b) => a[0].x - b[0].x);
-
-        let events = [],
-            e = [];
-
-        for (let item of page) {
-            if (item.length == event.numParams) {
-
-                item = {
-                    key: item[event.key].text,
-                    value: item[event.value].text,
-                    x: item[event.key].x,
-                    y: item[event.key].y,
-                };
-            } else if (item.length == customDimension.numParams) {
-                item = {
-                    key: item[customDimension.key].text,
-                    value: item[customDimension.value].text,
-                    x: item[customDimension.key].x,
-                    y: item[customDimension.key].y,
-                };
-            } else continue;
-
-            if (regexTitle.test(item.key)) {
-                e = [];
-                if (page.indexOf(item) != 0) events.push(e);
-                //else if (events.length == 0) events.push(item);
-            }
-
-            if (customDimension.title.indexOf(item.key) == -1) e.push(item);
-        }
-        events = events
-            .sort((a, b) => a[0].y - b[0].y)
-            .map((item) =>
-                item.map(({ key, value }) => {
-                    return { key, value };
-                })
+        let events = [], event = {};
+        if (index > 0) {
+            let [{ text: key }, { text: value }] = groups[index - 1];
+            events.push(
+                {
+                    [newConfig.eventTitle]: /page/i.test(key) ? "page_view" : "screenView",
+                    [key]: value
+                }
             );
-        //console.log("=========",events, "=============");
+        }
+        for (let item in page) {
+            let [{ text: key }, { text: value }] = page[item];
+            if ((item != 0 && regexTitle.test(key))) {
+                events.push(event);
+                event = {};
+            }
+            event[key] = value;
+            if (item == page.length - 1 && regexTitle.test(Object.keys(event)[0])) events.push(event);
+        }
         return { info, events };
     } catch (error) {
         console.error(error);

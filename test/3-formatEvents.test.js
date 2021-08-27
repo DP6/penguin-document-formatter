@@ -32,7 +32,7 @@ describe('Formata eventos para consolidar', function () {
     it('Executa a formatação', () => {
         pages.forEach((page, index) => {
             let { info, events } = page;
-            let { pageview, eventos } = formatEvents(events, info, index);
+            let { pageview, eventos } = formatEvents(events, info);
 
             actual_pageview = pageview;
             actual_eventos = eventos;

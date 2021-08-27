@@ -39,3 +39,6 @@ jspm_packages/
 
 # husky
 .husky
+
+tmp/
+*.pdf

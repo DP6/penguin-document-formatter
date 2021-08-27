@@ -2,56 +2,36 @@ exports.formatEvents = formatEvents;
 
 function formatEvents(events, info) {
     try {
-        let pageview, eventos;
+        const metadata = getMetadata(info);
+        let [pageview, ...eventos] = events;
+        const [, pagepath] = Object.values(pageview);
+        pageview = [{
+            pagename: pagepath,
+            ...metadata
+        }]
+        eventos = eventos.map(({ Evento: eventType, ...params }) => {
 
-        pageview = events.filter((item) => /p[aá]g/i.test(item[0].key) || /p[aá]g/.test(item[0].value))
-        pageview = pageview ? pageview[0] : pageview;
-        let pageview_index = events.indexOf(pageview);
-        if (pageview != undefined && pageview_index != -1)
-            events.splice(pageview_index, 1);
+            let { eventCategory, eventAction, eventLabel } = params
 
-        if (pageview != undefined && /event/i.test(pageview[0].key))
-            pageview = pageview.filter(item => /p[aá]g/i.test(item.key))
-
-        pageview = pageview && pageview.length > 0 ? pageview.map((item) => {
             return {
-                pagename: item.value,
-                versao: info.version,
-                tela: info.screen,
-                pagina_mapa: info.pageNumber,
-                nome_mapa: info.name
+                eventType,
+                eventCategory,
+                eventAction,
+                eventLabel,
+                pagename: pagepath,
+                ...metadata
             }
-        }) : null;
-
-        const pagePath = pageview[0].pagename;
-
-        eventos = events.length > 0 ? events.map(([evento, category, action, label]) => {
-            if (/event/i.test(evento.key)) {
-                return {
-                    eventType: evento.value,
-                    eventCategory: category.value,
-                    eventAction: action.value,
-                    eventLabel: label.value,
-                    pagename: pagePath,
-                    versao: info.version,
-                    tela: info.screen,
-                    pagina_mapa: info.pageNumber,
-                    nome_mapa: info.name
-                }
-            } else {
-                return null;
-            }
-        }) : null;
+        });
         return { pageview, eventos };
     } catch (error) {
         console.error(error);
-        publishAlert({
-            jobId: "",
-            code: 502,
-            message: "Erro ao formatar eventos de UA.",
-            document: info.name,
-            page: info.pageNumber,
-            version: info.version
-        });
+    }
+}
+
+function getMetadata(info) {
+    const { version: versao, screen: tela,
+        pageNumber: pagina_mapa, name: nome_mapa } = info;
+    return {
+        versao, tela, pagina_mapa, nome_mapa
     }
 }
