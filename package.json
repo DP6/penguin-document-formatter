@@ -10,17 +10,17 @@
   "author": "1cadumagalhaes",
   "license": "ISC",
   "dependencies": {
-    "@google-cloud/bigquery": "^5.5.0",
-    "@google-cloud/firestore": "^4.9.8",
-    "@google-cloud/pubsub": "^2.10.0",
+    "@google-cloud/bigquery": "^5.8.0",
+    "@google-cloud/firestore": "^4.15.0",
+    "@google-cloud/pubsub": "^2.17.0",
     "axios": "^0.21.1",
-    "pdf2json": "^1.2.0"
+    "pdf2json": "^1.2.3"
   },
   "devDependencies": {
     "gulp": "^4.0.2",
     "gulp-mocha": "^7.0.2",
     "gulp-zip": "^5.1.0",
-    "mocha": "^8.2.1"
+    "mocha": "^8.4.0"
   },
   "directories": {
     "test": "test"
