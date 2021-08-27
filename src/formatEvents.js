@@ -25,6 +25,16 @@ function formatEvents(events, info) {
         return { pageview, eventos };
     } catch (error) {
         console.error(error);
+        sendData(
+            {
+                code: "01-01",
+                spec: path,
+                description: "Erro ao formatar eventos de UA",
+                payload: {
+                    error: error.message
+                }
+            }
+        );
     }
 }
 

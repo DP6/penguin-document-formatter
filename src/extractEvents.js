@@ -1,4 +1,5 @@
 const { get } = require('./firestore');
+const sendData = require('./hub');
 
 exports.extractEvents = extractEventsFromJson;
 async function extractEventsFromJson(content, pageNumber, nomeMapa, config = "") {
@@ -11,6 +12,16 @@ async function extractEventsFromJson(content, pageNumber, nomeMapa, config = "")
         return { info, events };
     } catch (error) {
         console.error(error);
+        sendData(
+            {
+                code: "01-01",
+                spec: path,
+                description: "Erro ao extrair eventos do JSON",
+                payload: {
+                    error: error
+                }
+            }
+        );
     }
 }
 
@@ -134,14 +145,16 @@ function groupEvents(groups, pageNumber, nomeMapa, { event, customDimension }) {
         return { info, events };
     } catch (error) {
         console.error(error);
-        publishAlert({
-            jobId: "",
-            code: 504,
-            message: "Erro ao estruturar a lista de eventos.",
-            document: nomeMapa,
-            page: pageNumber,
-            version: '-'
-        });
+        sendData(
+            {
+                code: "01-01",
+                spec: path,
+                description: "Erro ao estruturar eventos do JSON",
+                payload: {
+                    error: error
+                }
+            }
+        );
     }
 }
 

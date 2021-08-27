@@ -13,6 +13,7 @@
     "@google-cloud/bigquery": "^5.5.0",
     "@google-cloud/firestore": "^4.9.8",
     "@google-cloud/pubsub": "^2.10.0",
+    "axios": "^0.21.1",
     "pdf2json": "^1.2.0"
   },
   "devDependencies": {

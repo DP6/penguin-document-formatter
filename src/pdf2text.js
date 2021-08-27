@@ -1,4 +1,5 @@
 const PDFParser = require('pdf2json');
+const sendData = require('./hub');
 
 exports.pdfToJson = async function pdfToJson(path) {
     try {
@@ -6,6 +7,16 @@ exports.pdfToJson = async function pdfToJson(path) {
         return data;
     } catch (error) {
         console.error('Erro: ', error.message);
+        sendData(
+            {
+                code: "01-01",
+                spec: path,
+                description: "Erro ao extrair texto do pdf",
+                payload: {
+                    error: error.message
+                }
+            }
+        );
     }
 }
 
