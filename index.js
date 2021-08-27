@@ -3,7 +3,7 @@ const { argv } = process;
 
 const { pdfToJson } = require('./src/pdf2text');
 const { getEvents_local, saveAllFiles } = require('./src/local');
-const { formatEvents } = require('./src/formatEvents');
+const { formatEvents, formatEnhancedEcommerce } = require('./src/formatEvents');
 
 async function main(argv) {
     try {
@@ -34,12 +34,16 @@ async function main(argv) {
             let { info, events } = page;
             console.log(`pagina ${info.pageNumber} com ${page.events.length} eventos`)
             let { pageview, eventos } = formatEvents(events, info);
+            let { ecommerce } = formatEnhancedEcommerce(events, info);
             //TODO consolidar eventos
             console.log("\n=======================\n");
             console.log("PAGEVIEW:\n");
             console.table(pageview);
             console.log("\nEVENTS:\n");
             console.table(eventos);
+            console.log("\n=======================\n");
+            console.log("\nECOMMERCE\n");
+            console.log(ecommerce);
             console.log("\n=======================\n");/**/
         });
 
