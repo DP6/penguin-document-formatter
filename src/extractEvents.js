@@ -58,7 +58,7 @@ function groupTexts(texts, limitX = 20, limitY = 0.05) {
 function mergeRow(group, limit = 0) {
     let copy = [];
     let temp = null;
-    const size = (30.174 - 28.18) / 4;
+    const size = (30.174 - 28.18) / 5;
     for (var i in group) {
         if (temp === null) temp = group[i];
         const item = temp;
@@ -86,7 +86,7 @@ function groupEvents(groups, pageNumber, nomeMapa, { event, customDimension }) {
 
     let newConfig = {
         eventTitle: "Evento",
-        pageviewTitle: "(page|screen)(name)?$",
+        pageviewTitle: "(page|screen)(name|view)?$",
         parameters: 2
     };
 
