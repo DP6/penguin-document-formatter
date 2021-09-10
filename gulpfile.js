@@ -7,12 +7,16 @@ function extractJson() {
     return src('src/pdf2text.js').pipe(dest('functions/convert-pdf-to-json/'));
 }
 
+function convertFirestore() {
+    return src('src/firestore.js').pipe(dest('functions/convert-pdf-to-json/'));
+}
+
 function convertHub() {
     return src('src/hub.js').pipe(dest('functions/convert-pdf-to-json/'));
 }
 
-function convertFirestore() {
-    return src('src/firestore.js').pipe(dest('functions/convert-pdf-to-json/'));
+function convertConfig() {
+    return src('src/config.json').pipe(dest('functions/convert-pdf-to-json/'));
 }
 
 function zipConvert() {
@@ -32,7 +36,11 @@ function extractEvents() {
 }
 
 function formatEvents() {
-    return src('src/formatEvents.js').pipe(dest('functions/convert-pdf-to-json'));
+    return src('src/formatEvents.js').pipe(dest('functions/extract-events'));
+}
+
+function extractConfig() {
+    return src('src/config.json').pipe(dest('functions/extract-events/'));
 }
 
 function extractHub() {
@@ -59,7 +67,7 @@ function test() {
 
 exports.build = series(
     test,
-    parallel(extractJson, convertHub, convertFirestore, saveFile, extractEvents,),
-    parallel(formatEvents, extractHub, extractFirestore),
+    parallel(extractJson, convertHub, convertFirestore, saveFile, extractEvents, convertConfig),
+    parallel(formatEvents, extractHub, extractFirestore, extractConfig),
     parallel(zipConvert, zipExtract)
 );
