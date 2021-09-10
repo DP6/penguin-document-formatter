@@ -24,19 +24,15 @@ function zipConvert() {
 
 //Extract events from file
 function saveFile() {
-    return src('src/saveFile.js').pipe(dest('functions/extract-events'));
+    return src('src/saveFile.js').pipe(dest('functions/convert-pdf-to-json'));
 }
 
 function extractEvents() {
-    return src('src/extractEvents.js').pipe(dest('functions/extract-events'));
+    return src('src/extractEvents.js').pipe(dest('functions/convert-pdf-to-json'));
 }
 
 function formatEvents() {
-    return src('src/formatEvents.js').pipe(dest('functions/extract-events'));
-}
-
-function bigQuery() {
-    return src('src/bigquery.js').pipe(dest('functions/extract-events'));
+    return src('src/formatEvents.js').pipe(dest('functions/convert-pdf-to-json'));
 }
 
 function extractHub() {
@@ -74,7 +70,7 @@ function test() {
 
 exports.build = series(
     test,
-    parallel(extractJson, convertHub, convertFirestore, moveHub),
-    parallel(saveFile, extractEvents, formatEvents, extractHub, extractFirestore),
+    parallel(extractJson, convertHub, convertFirestore, saveFile, extractEvents,),
+    parallel(formatEvents, extractHub, extractFirestore),
     parallel(zipConvert, zipExtract, zipHubMessage)
 );

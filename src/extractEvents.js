@@ -2,12 +2,9 @@ const { get } = require('./firestore');
 const sendData = require('./hub');
 
 exports.extractEvents = extractEventsFromJson;
-async function extractEventsFromJson(content, pageNumber, nomeMapa, config = "") {
+async function extractEventsFromJson(content, pageNumber, nomeMapa, config) {
     try {
-        if (config === "")
-            config = await get("raft-suite/config");
-        let pages = JSON.parse(content);
-        let groups = groupTexts(pages);
+        let groups = groupTexts(content);
         let { info, events } = groupEvents(groups, pageNumber, nomeMapa, config);
         return { info, events };
     } catch (error) {
@@ -82,14 +79,21 @@ function mergeRow(group, limit = 0) {
     return copy;
 }
 
-function groupEvents(groups, pageNumber, nomeMapa, { event, customDimension }) {
+function groupEvents(groups, pageNumber, nomeMapa, { eventTitle = "Evento", pageviewTitle = "(page|screen)(name|view)?$", parameters = 2, keyIndex = 0, valueIndex = 1 }) {
 
     let newConfig = {
-        eventTitle: "Evento",
-        pageviewTitle: "(page|screen)(name|view)?$",
-        parameters: 2
+        eventTitle,
+        pageviewTitle,
+        parameters,
+        keyIndex,
+        valueIndex,
     };
 
+    newConfig = {
+        ...newConfig,
+        eventTitle: "Evento|(Ação de E-commerce)|(DataLayer Event)",
+        parameters: 2,
+    }
     try {
         let regex = /(V\d+)\s-\s(T\d+)/;
         let regexTitle = new RegExp(`^${newConfig.eventTitle}\$`, 'i');
@@ -111,7 +115,7 @@ function groupEvents(groups, pageNumber, nomeMapa, { event, customDimension }) {
             version: versao,
             screen: tela,
         };
-        if (versao == 'VX') return { info, events: [] };
+        //if (versao == 'VX') return { info, events: [] };
         let pageviewRegex = new RegExp([newConfig.pageviewTitle], 'i');
         groups = groups.map(group => mergeRow(group))
             .filter(group => group.length == newConfig.parameters);
@@ -120,21 +124,23 @@ function groupEvents(groups, pageNumber, nomeMapa, { event, customDimension }) {
             group.length > 1 &&
             (pageviewRegex.test(group[0].text) ||
                 pageviewRegex.test(group[1].text)));
-
         index = index === -1 ? 0 : index + 1;
         let page = groups.slice(index).sort((a, b) => a[0].x - b[0].x);
         let events = [], event = {};
         if (index > 0) {
-            let [{ text: key }, { text: value }] = groups[index - 1];
+            let row = groups[index - 1];
+            let { text: key } = row[newConfig.keyIndex];
+            let { text: value } = row[newConfig.valueIndex];
             events.push(
                 {
-                    [newConfig.eventTitle]: /page/i.test(key) ? "page_view" : "screenView",
+                    [newConfig.eventTitle.split("|")[0]]: /page/i.test(key) ? "page_view" : "screenView",
                     [key]: value
                 }
             );
         }
         for (let item in page) {
             let [{ text: key }, { text: value }] = page[item];
+            key = regexTitle.test(key) ? key.replace(regexTitle, "Evento") : key;
             if ((item != 0 && regexTitle.test(key))) {
                 events.push(event);
                 event = {};

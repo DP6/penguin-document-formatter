@@ -36,7 +36,7 @@ function saveAllFiles(name, data) {
     const size = data.length;
     for (const file of data) {
         const index = data.indexOf(file) + 1;
-        const newName = `${filePath.replace('pdf', '')}_output_${index}_to_${size}.json`;
+        const newName = `${filePath.replace('.pdf', '')}_output_${index}_to_${size}.json`;
         const saved = saveFile(newName, file);
         if (saved) {
             files.push(saved);
