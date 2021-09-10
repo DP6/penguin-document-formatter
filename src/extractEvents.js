@@ -81,19 +81,23 @@ function mergeRow(group, limit = 0) {
 
 function groupEvents(groups, pageNumber, nomeMapa, { eventTitle = "Evento", pageviewTitle = "(page|screen)(name|view)?$", parameters = 2, keyIndex = 0, valueIndex = 1, metadata = true }) {
 
+
     let newConfig = {
         eventTitle,
         pageviewTitle,
         parameters,
         keyIndex,
         valueIndex,
+        metadata
     };
 
+    /* teste mapa
     newConfig = {
         ...newConfig,
         eventTitle: "Evento|(Ação de E-commerce)|(DataLayer Event)",
         parameters: 2,
-    }
+        metadata: false
+    }*/
     try {
         let regex = /(V\d+)\s-\s(T\d+)/;
         let regexTitle = new RegExp(`^${newConfig.eventTitle}\$`, 'i');
