@@ -5,10 +5,8 @@ const os = require('os');
 const { Storage } = require('@google-cloud/storage');
 const storage = new Storage();
 
-const { extractEvents } = require('./extractEvents');
 const { formatEvents } = require('./formatEvents');
-const { get } = require('./hub');
-const { insertRowsAsStream } = require('./bigquery');
+const { sendData } = require('./hub');
 
 exports.extractEvents = async function (event, context) {
 
@@ -28,31 +26,55 @@ exports.extractEvents = async function (event, context) {
         console.info("Info", `File gs://${bucket}/${name} download to: ${tempFilePath}`);
 
         const content = fs.readFileSync(tempFilePath, { encoding: 'utf-8' });
-        const page = extractEvents(content);
+        const page = JSON.parse(content);
         if (page.events.length > 0) {
             //console.log(page);
             let index = /.*(\d)_to_\d\.json/.test(name) ? name.match(/.*(\d)_to_\d\.json/) : [];
+            if (index.length == 0) return;
             index = index[1];
             let { info, events } = page;
             let { pageview, eventos } = formatEvents(events, info, index);
             console.info('Info', `Consolidando ${pageview.length} pageview com ${eventos.length} eventos`);
-            await insertRowsAsStream([pageview], dataset, tables.pageview, schemas.pageviews);
-            await insertRowsAsStream(events, dataset, tables.events, schemas.events);
-            //rows, datasetId, tableName, schema
+
+            sendData(
+                {
+                    code: "01-00",
+                    spec: filePath,
+                    description: "Pageview extraido com sucesso",
+                    payload: {
+                        pageview: [pageview]
+                    }
+                }
+            );
+            sendData(
+                {
+                    code: "01-00",
+                    spec: filePath,
+                    description: "Eventos extraidos com sucesso",
+                    payload: {
+                        events
+                    }
+                }
+            );
         }
         fs.unlinkSync(tempFilePath);
         /**/
 
     } catch (error) {
         console.error(error);
-        publishAlert({
-            jobId: "",
-            code: 505,
-            message: "Erro ao consolidar os dados no bigquery",
-            document: fileName.split('.pdf')[0],
-            page: '-',
-            version: '-'
-        });
+        sendData(
+            {
+                code: "01-01",
+                spec: filePath,
+                description: "Erro ao converter a página para json.",
+                payload: {
+                    error: error.message,
+                    document: fileName.split('.pdf')[0],
+                    page: '-',
+                    version: '-'
+                }
+            }
+        );
     }
 }
 

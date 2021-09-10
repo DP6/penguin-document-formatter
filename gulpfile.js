@@ -7,12 +7,16 @@ function extractJson() {
     return src('src/pdf2text.js').pipe(dest('functions/convert-pdf-to-json/'));
 }
 
+function convertFirestore() {
+    return src('src/firestore.js').pipe(dest('functions/convert-pdf-to-json/'));
+}
+
 function convertHub() {
     return src('src/hub.js').pipe(dest('functions/convert-pdf-to-json/'));
 }
 
-function convertFirestore() {
-    return src('src/firestore.js').pipe(dest('functions/convert-pdf-to-json/'));
+function convertConfig() {
+    return src('src/config.json').pipe(dest('functions/convert-pdf-to-json/'));
 }
 
 function zipConvert() {
@@ -24,19 +28,19 @@ function zipConvert() {
 
 //Extract events from file
 function saveFile() {
-    return src('src/saveFile.js').pipe(dest('functions/extract-events'));
+    return src('src/saveFile.js').pipe(dest('functions/convert-pdf-to-json'));
 }
 
 function extractEvents() {
-    return src('src/extractEvents.js').pipe(dest('functions/extract-events'));
+    return src('src/extractEvents.js').pipe(dest('functions/convert-pdf-to-json'));
 }
 
 function formatEvents() {
     return src('src/formatEvents.js').pipe(dest('functions/extract-events'));
 }
 
-function bigQuery() {
-    return src('src/bigquery.js').pipe(dest('functions/extract-events'));
+function extractConfig() {
+    return src('src/config.json').pipe(dest('functions/extract-events/'));
 }
 
 function extractHub() {
@@ -55,17 +59,6 @@ function zipExtract() {
 }
 
 //Receive hub messages
-function moveHub() {
-    return src('src/hub.js').pipe(dest('functions/hub-receive-message/'));
-}
-
-function zipHubMessage() {
-    return src('functions/hub-receive-message')
-        .pipe(zip('hub-receive-message.zip'))
-        .pipe(dest('dist'))
-}
-
-
 function test() {
     return src(['test/*.js']).pipe(mocha());
 }
@@ -74,7 +67,7 @@ function test() {
 
 exports.build = series(
     test,
-    parallel(extractJson, convertHub, convertFirestore, moveHub),
-    parallel(saveFile, extractEvents, formatEvents, extractHub, extractFirestore),
-    parallel(zipConvert, zipExtract, zipHubMessage)
+    parallel(extractJson, convertHub, convertFirestore, saveFile, extractEvents, convertConfig),
+    parallel(formatEvents, extractHub, extractFirestore, extractConfig),
+    parallel(zipConvert, zipExtract)
 );

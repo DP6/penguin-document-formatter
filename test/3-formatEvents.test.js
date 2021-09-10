@@ -25,14 +25,13 @@ describe('Formata eventos para consolidar', function () {
     before(async () => {
 
         const data = await pdfToJson(file);
-        files = saveAllFiles(file, data);
-        pages = getEvents_local(files, file, config);
+        pages = data;
     });
 
     it('Executa a formatação', () => {
         pages.forEach((page, index) => {
             let { info, events } = page;
-            let { pageview, eventos } = formatEvents(events, info, index);
+            let { pageview, eventos } = formatEvents(events, info);
 
             actual_pageview = pageview;
             actual_eventos = eventos;

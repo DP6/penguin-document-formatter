@@ -5,7 +5,7 @@ const { Storage } = require('@google-cloud/storage');
 const storage = new Storage();
 
 const { pdfToJson } = require('./pdf2text');
-const { publishAlert } = require('./hub');
+const { sendData } = require('./hub');
 
 exports.extractText = async function extractText(event, context) {
     try {
@@ -38,35 +38,51 @@ exports.extractText = async function extractText(event, context) {
                 } catch (error) {
                     console.error(error);
                     const page = (index + 1).toLocaleString(undefined, { minimumIntegerDigits: 2 })
-                    publishAlert({
-                        jobId: "",
-                        code: 501,
-                        message: "Erro ao converter a página para json.",
-                        document: filePath,
-                        page: page,
-                        version: '-'
-                    });
+                    sendData(
+                        {
+                            code: "01-01",
+                            spec: filePath,
+                            description: "Erro ao converter a página para json.",
+                            payload: {
+                                error: error.message,
+                                document: filePath,
+                                page: page,
+                                version: '-'
+                            }
+                        }
+                    );
+
                     //{ jobId, code, message, document, page, version }
                 }
             }
         );
-        publishAlert({
-            jobId: "",
-            code: 200,
-            message: "Arquivo convertido com sucesso.",
-            document: filePath,
-            page: page,
-            version: '-'
-        });
+        sendData(
+            {
+                code: "01-00",
+                spec: filePath,
+                description: "Arquivo convertido com sucesso.",
+                payload: {
+                    error: error.message,
+                    document: filePath,
+                    page: '-',
+                    version: '-'
+                }
+            }
+        );
     } catch (error) {
         console.error(error);
-        publishAlert({
-            jobId: "",
-            code: 500,
-            message: "Erro ao processar o pdf.",
-            document: filePath,
-            page: '-',
-            version: '-'
-        });
+        sendData(
+            {
+                code: "01-01",
+                spec: filePath,
+                description: "Erro ao processar o pdf.",
+                payload: {
+                    error: error.message,
+                    document: filePath,
+                    page: '-',
+                    version: '-'
+                }
+            }
+        );
     }
 }
