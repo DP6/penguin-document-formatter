@@ -4,7 +4,7 @@
 <img src="https://raw.githubusercontent.com/DP6/templates-centro-de-inovacoes/main/public/images/centro_de_inovacao_dp6.png" height="100px" />
 </div>
 
-[![Build Status](https://travis-ci.org/DP6/Doc-Formatter-Penguin.svg?branch=main)](https://travis-ci.org/DP6/Doc-Formatter-Penguin)
+[![Build Status](https://travis-ci.org/DP6/penguin-document-formatter.svg?branch=main)](https://travis-ci.org/DP6/penguin-document-formatter)
 
 O penguin-document-formatter é um módulo do ecossistema raft-suite criado pela [DP6](https://www.dp6.com.br) para garantir a qualidade dos dados ([Data Quality](https://en.wikipedia.org/wiki/Data_quality)) nos projetos de engenharia de dados implementados nos clientes da DP6, através de monitoramento automatizados de dados.
 
