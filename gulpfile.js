@@ -51,17 +51,6 @@ function zipExtract() {
 }
 
 //Receive hub messages
-function moveHub() {
-    return src('src/hub.js').pipe(dest('functions/hub-receive-message/'));
-}
-
-function zipHubMessage() {
-    return src('functions/hub-receive-message')
-        .pipe(zip('hub-receive-message.zip'))
-        .pipe(dest('dist'))
-}
-
-
 function test() {
     return src(['test/*.js']).pipe(mocha());
 }
@@ -72,5 +61,5 @@ exports.build = series(
     test,
     parallel(extractJson, convertHub, convertFirestore, saveFile, extractEvents,),
     parallel(formatEvents, extractHub, extractFirestore),
-    parallel(zipConvert, zipExtract, zipHubMessage)
+    parallel(zipConvert, zipExtract)
 );

@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test/*.test.js",
-    "dev:test": "mocha test/*.test.js -w"
+    "dev:test": "mocha test/*.test.js -w",
+    "build": "gulp build"
   },
   "author": "1cadumagalhaes",
   "license": "ISC",
