@@ -79,7 +79,7 @@ function mergeRow(group, limit = 0) {
     return copy;
 }
 
-function groupEvents(groups, pageNumber, nomeMapa, { eventTitle = "Evento", pageviewTitle = "(page|screen)(name|view)?$", parameters = 2, keyIndex = 0, valueIndex = 1 }) {
+function groupEvents(groups, pageNumber, nomeMapa, { eventTitle = "Evento", pageviewTitle = "(page|screen)(name|view)?$", parameters = 2, keyIndex = 0, valueIndex = 1, metadata = true }) {
 
     let newConfig = {
         eventTitle,
@@ -115,7 +115,7 @@ function groupEvents(groups, pageNumber, nomeMapa, { eventTitle = "Evento", page
             version: versao,
             screen: tela,
         };
-        //if (versao == 'VX') return { info, events: [] };
+        if (versao == 'VX' && metadata) return { info, events: [] };
         let pageviewRegex = new RegExp([newConfig.pageviewTitle], 'i');
         groups = groups.map(group => mergeRow(group))
             .filter(group => group.length == newConfig.parameters);
