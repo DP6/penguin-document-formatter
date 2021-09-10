@@ -20,10 +20,7 @@ describe('Extrair eventos', function () {
     before(async () => {
 
         const data = await pdfToJson(FILE);
-
-        files = saveAllFiles(FILE, data);
-
-        pages = getEvents_local(files, FILE, config);
+        pages = data;
     });
 
     it("Extrai uma página com eventos do pdf", () => {

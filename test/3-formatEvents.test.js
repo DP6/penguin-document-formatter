@@ -25,8 +25,7 @@ describe('Formata eventos para consolidar', function () {
     before(async () => {
 
         const data = await pdfToJson(file);
-        files = saveAllFiles(file, data);
-        pages = getEvents_local(files, file, config);
+        pages = data;
     });
 
     it('Executa a formatação', () => {

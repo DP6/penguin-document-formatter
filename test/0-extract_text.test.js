@@ -3,7 +3,7 @@ const path = require('path');
 
 const { pdfToJson } = require('../src/pdf2text');
 
-const MAPA = { path: path.basename('../sitedp6.pdf'), paginas: 3 };
+const MAPA = { path: path.basename('../sitedp6.pdf'), paginas: 1 };
 
 const CHAVES = ['x', 'y', 'text'];
 
@@ -16,11 +16,8 @@ describe('Extrai json do PDF', function () {
         ok(Array.isArray(dados));
     });
 
-    it(`Tem ${MAPA.paginas} paginas`, () => {
-        deepStrictEqual(dados.length, 3);
+    it(`Extraiu ${MAPA.paginas} paginas com eventos`, () => {
+        deepStrictEqual(dados.length, MAPA.paginas);
     });
 
-    it('Tem objetos com as chaves x, y e text', () => {
-        deepStrictEqual(Object.keys(dados[1][0]), CHAVES);
-    })
 });
