@@ -100,6 +100,7 @@ function groupEvents(groups, pageNumber, nomeMapa, { eventTitle = "Evento", page
         "valueIndex": 1,
         "metadata": false
     }/**/
+    console.log(newConfig)
     try {
         let regex = /(V\d+)\s-\s(T\d+)/;
         let regexTitle = new RegExp(`^${newConfig.eventTitle}\$`, 'i');
@@ -122,10 +123,22 @@ function groupEvents(groups, pageNumber, nomeMapa, { eventTitle = "Evento", page
             screen: tela,
         };
         if (versao == 'VX' && newConfig.metadata) return { info, events: [] };
-
         let pageviewRegex = new RegExp([newConfig.pageviewTitle], 'i');
-        groups = groups.map(group => mergeRow(group))
-            .filter(group => group.length == newConfig.parameters);
+        groups = groups.map(group => {
+            group = mergeRow(group)
+
+            if (group[0].text.match(pageviewRegex)) {
+                let { x, y, text } = group[0];
+                let [event, path] = text.split(" ");
+                group = [
+                    { x, y, text: event },
+                    { x, y, text: path }
+                ]
+            }
+            return group;
+        })
+        groups = groups.filter(group => group.length == newConfig.parameters);
+
         //console.log(groups);
         let index = groups.findIndex(group =>
             group.length > 1 &&
@@ -136,7 +149,6 @@ function groupEvents(groups, pageNumber, nomeMapa, { eventTitle = "Evento", page
         let events = [], event = {};
         if (index > 0) {
             let row = groups[index - 1];
-
             let { text: key } = row[newConfig.keyIndex];
 
             let { text: value } = row[newConfig.valueIndex];

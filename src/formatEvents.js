@@ -46,7 +46,7 @@ function formatEnhancedEcommerce(events, info) {
         const metadata = getMetadata(info);
         let [pageview, ...eventos] = events;
         const [, pagepath] = Object.values(pageview);
-        const eec_events = ['promoView', 'promoClick', 'productView', 'productClick', 'productDetail', 'addToCart', 'checkout', 'removeFromCart', 'purchase'];
+        const eec_events = ['impressionClicks', 'impressionViews', 'promotionViews', 'promotionClicks', 'productDetail', 'addToCart', 'checkout', 'removeFromCart', 'purchase'];
         let ecommerce = eventos.filter(
             ({ Evento: name }) => eec_events.includes(name))
             .map(({ Evento: eventType, ...params }) => {
