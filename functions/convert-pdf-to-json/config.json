@@ -1,7 +1,8 @@
 {
-    "eventTitle": "evento",
-    "pageviewTitle": "(page|screen)(name|view)?$",
+    "eventTitle": "Evento|(Ação de E-(c|C)ommerce)|(DataLayer Event)",
+    "pageviewTitle": "(virtualPageview|screenName)",
     "parameters": 2,
     "keyIndex": 0,
-    "valueIndex": 1
+    "valueIndex": 1,
+    "metadata": false
 }

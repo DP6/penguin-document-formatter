@@ -138,7 +138,6 @@ function groupEvents(groups, pageNumber, nomeMapa, { eventTitle = "Evento", page
             return group;
         })
         groups = groups.filter(group => group.length == newConfig.parameters);
-
         //console.log(groups);
         let index = groups.findIndex(group =>
             group.length > 1 &&
