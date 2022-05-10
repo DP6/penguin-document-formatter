@@ -55,7 +55,7 @@ function formatJson(pdfData) {
         string = string.replace(regexSimple, replaceTextSimple);
     }
     let json = JSON.parse(string);
-    let pages = json['formImage']['Pages'];
+    let pages = json['Pages'];
     pages = pages
         .map((page) => {
             let texts = page['Texts'];
