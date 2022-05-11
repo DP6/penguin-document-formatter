@@ -56,7 +56,7 @@ function formatEnhancedEcommerce(events, info) {
                 delete params.eventLabel;
 
                 // Exclui parâmetros pegos errôneamente do pdf
-                let fineKeys = ['Evento', 'virtualPageview', 'eventCategory', 'eventAction', 'eventLabel', 'id', 'name', 'category', 'list', 'position', 'price', 'brand', 'availability', 'pagePath', 'pageCategory', 'pageType', 'userId', 'email', 'clientType', 'namePromotion', 'namePromocao', 'nameBanner'];
+                let fineKeys = ['Evento', 'virtualPageview', 'eventCategory', 'eventAction', 'eventLabel', 'id', 'name', 'category', 'list', 'position', 'price', 'brand', 'availability', 'pagePath', 'pageCategory', 'pageType', 'userId', 'email', 'clientType', 'namePromotion', 'namePromocao', 'nameBanner', 'step'];
                 for (let key in params) {
                     if (!fineKeys.includes(key)) {
                         delete params[key];
