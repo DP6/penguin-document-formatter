@@ -3,7 +3,7 @@ const { argv } = process;
 const fs = require('fs');
 const { pdfToJson } = require('./src/pdf2text');
 const { getEvents_local, saveAllFiles } = require('./src/local');
-const { formatEvents, formatEnhancedEcommerce } = require('./src/formatEvents');
+const { formatEvents, formatEnhancedEcommerce, formatDataLayer } = require('./src/formatEvents');
 
 async function main(argv) {
     try {
@@ -40,9 +40,10 @@ async function main(argv) {
 
         pages.forEach((page, index) => {
             let { info, events } = page;
-            console.log(`pagina ${info.pageNumber} com ${page.events.length} eventos`)
             let { pageview, eventos } = formatEvents(events, info);
             let { ecommerce } = formatEnhancedEcommerce(events, info);
+            let { datalayer } = formatDataLayer(events, info);
+            console.log(`pagina ${info.pageNumber} com ${pageview.length} pageviews, ${eventos.length} eventos de interação, ${ecommerce.length} de ecommerce e ${datalayer.length} de datalayer`);
             //TODO consolidar eventos
             console.log("\n=======================\n");
             console.log("PAGEVIEW:\n");
@@ -52,7 +53,10 @@ async function main(argv) {
             console.log("\n=======================\n");
             console.log("\nECOMMERCE\n");
             console.log(ecommerce);
-            console.log("\n=======================\n");/**/
+            console.log("\n=======================\n");
+            console.log("\nDATALAYER\n");
+            console.log(datalayer);
+            console.log("\n=======================\n");
         });
 
 

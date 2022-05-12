@@ -37,22 +37,7 @@ exports.extractText = async function extractText(event, context) {
                     console.log("Info", `${newFilePath} created to ${bucketJson}.`);
                 } catch (error) {
                     console.error(error);
-                    const page = (index + 1).toLocaleString(undefined, { minimumIntegerDigits: 2 })
-                    sendData(
-                        {
-                            code: "01-01",
-                            spec: filePath,
-                            description: "Erro ao converter a página para json.",
-                            payload: {
-                                error: error.message,
-                                document: filePath,
-                                page: page,
-                                version: '-'
-                            }
-                        }
-                    );
-
-                    //{ jobId, code, message, document, page, version }
+                    const page = (index + 1).toLocaleString(undefined, { minimumIntegerDigits: 2 });
                 }
             }
         );
@@ -62,27 +47,10 @@ exports.extractText = async function extractText(event, context) {
                 spec: filePath,
                 description: "Arquivo convertido com sucesso.",
                 payload: {
-                    error: error.message,
-                    document: filePath,
-                    page: '-',
-                    version: '-'
                 }
             }
         );
     } catch (error) {
         console.error(error);
-        sendData(
-            {
-                code: "01-01",
-                spec: filePath,
-                description: "Erro ao processar o pdf.",
-                payload: {
-                    error: error.message,
-                    document: filePath,
-                    page: '-',
-                    version: '-'
-                }
-            }
-        );
     }
 }
