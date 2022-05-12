@@ -46,7 +46,7 @@ function formatEnhancedEcommerce(events, info) {
         const metadata = getMetadata(info);
         let [pageview, ...eventos] = events;
         const [, pagepath] = Object.values(pageview);
-        const eec_events = ['promoView', 'promoClick', 'productView', 'productClick', 'productDetail', 'addToCart', 'checkout', 'removeFromCart', 'purchase'];
+        const eec_events = ['promotionViews', 'promotionClicks', 'impressionViews', 'impressionClicks', 'productDetails', 'addToCart', 'checkout', 'removeFromCart', 'purchase'];
         let ecommerce = eventos.filter(
             ({ Evento: name }) => eec_events.includes(name))
             .map(({ Evento: eventType, ...params }) => {
@@ -54,6 +54,14 @@ function formatEnhancedEcommerce(events, info) {
                 delete params.eventAction;
                 delete params.eventCategory;
                 delete params.eventLabel;
+
+                // Exclui parâmetros pegos errôneamente do pdf
+                let fineKeys = ['Evento', 'virtualPageview', 'eventCategory', 'eventAction', 'eventLabel', 'id', 'name', 'category', 'list', 'position', 'price', 'brand', 'availability', 'pagePath', 'pageCategory', 'pageType', 'userId', 'email', 'clientType', 'namePromotion', 'namePromocao', 'nameBanner', 'step', 'item_id', 'item_name', 'creative_name'];
+                for (let key in params) {
+                    if (!fineKeys.includes(key)) {
+                        delete params[key];
+                    }
+                }
 
                 return {
                     eventType,

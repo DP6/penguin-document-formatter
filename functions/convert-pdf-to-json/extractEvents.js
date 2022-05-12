@@ -52,7 +52,7 @@ function groupTexts(texts, limitX = 20, limitY = 0.05) {
     return groups;
 }
 
-function mergeRow(group, limit = 0) {
+function mergeRow(group, limit = 0.02) {
     let copy = [];
     let temp = null;
     const size = (30.174 - 28.18) / 5;
@@ -67,6 +67,7 @@ function mergeRow(group, limit = 0) {
         const j = +i + 1;
         const next = group[j];
         let dif = next.x - item.x - item.text.length * size;
+        //console.log({ temp, item, dif });
         if (dif > limit) {
             copy.push(item);
             temp = null;
@@ -79,7 +80,7 @@ function mergeRow(group, limit = 0) {
     return copy;
 }
 
-function groupEvents(groups, pageNumber, nomeMapa, { eventTitle = "Evento", pageviewTitle = "(page|screen)(name|view)?$", parameters = 2, keyIndex = 0, valueIndex = 1 }) {
+function groupEvents(groups, pageNumber, nomeMapa, { eventTitle = "Evento", pageviewTitle = "(page|screen)(name|view)?$", parameters = 2, keyIndex = 0, valueIndex = 1, metadata = true }) {
 
     let newConfig = {
         eventTitle,
@@ -87,13 +88,19 @@ function groupEvents(groups, pageNumber, nomeMapa, { eventTitle = "Evento", page
         parameters,
         keyIndex,
         valueIndex,
+        metadata
     };
-
+    /*teste mapa
     newConfig = {
         ...newConfig,
-        eventTitle: "Evento|(Ação de E-commerce)|(DataLayer Event)",
-        parameters: 2,
-    }
+        "eventTitle": "Evento|(Ação de E-commerce)|(DataLayer Event)",
+        "pageviewTitle": "(page|screen)(name|view)?$",
+        "parameters": 2,
+        "keyIndex": 0,
+        "valueIndex": 1,
+        "metadata": false
+    }/**/
+    console.log(newConfig)
     try {
         let regex = /(V\d+)\s-\s(T\d+)/;
         let regexTitle = new RegExp(`^${newConfig.eventTitle}\$`, 'i');
@@ -115,11 +122,23 @@ function groupEvents(groups, pageNumber, nomeMapa, { eventTitle = "Evento", page
             version: versao,
             screen: tela,
         };
-        //if (versao == 'VX') return { info, events: [] };
+        if (versao == 'VX' && newConfig.metadata) return { info, events: [] };
         let pageviewRegex = new RegExp([newConfig.pageviewTitle], 'i');
-        groups = groups.map(group => mergeRow(group))
-            .filter(group => group.length == newConfig.parameters);
+        groups = groups.map(group => {
+            group = mergeRow(group)
 
+            if (group[0].text.match(pageviewRegex)) {
+                let { x, y, text } = group[0];
+                let [event, path] = text.split(" ");
+                group = [
+                    { x, y, text: event },
+                    { x, y, text: path }
+                ]
+            }
+            return group;
+        })
+        groups = groups.filter(group => group.length == newConfig.parameters);
+        //console.log(groups);
         let index = groups.findIndex(group =>
             group.length > 1 &&
             (pageviewRegex.test(group[0].text) ||
@@ -130,6 +149,7 @@ function groupEvents(groups, pageNumber, nomeMapa, { eventTitle = "Evento", page
         if (index > 0) {
             let row = groups[index - 1];
             let { text: key } = row[newConfig.keyIndex];
+
             let { text: value } = row[newConfig.valueIndex];
             events.push(
                 {
@@ -139,7 +159,9 @@ function groupEvents(groups, pageNumber, nomeMapa, { eventTitle = "Evento", page
             );
         }
         for (let item in page) {
-            let [{ text: key }, { text: value }] = page[item];
+            let row = page[item]
+            let { text: key } = row[newConfig.keyIndex];
+            let { text: value } = row[newConfig.valueIndex];
             key = regexTitle.test(key) ? key.replace(regexTitle, "Evento") : key;
             if ((item != 0 && regexTitle.test(key))) {
                 events.push(event);
@@ -148,6 +170,7 @@ function groupEvents(groups, pageNumber, nomeMapa, { eventTitle = "Evento", page
             event[key] = value;
             if (item == page.length - 1 && regexTitle.test(Object.keys(event)[0])) events.push(event);
         }
+        console.log(events);
         return { info, events };
     } catch (error) {
         console.error(error);

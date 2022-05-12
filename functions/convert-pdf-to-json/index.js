@@ -27,7 +27,7 @@ exports.extractText = async function extractText(event, context) {
 
         const data = await pdfToJson(tempFilePath);
 
-        const bucketJson = 'dq-doc-formatter-json-csf';
+        const bucketJson = 'dq-doc-formatter-json-rd';
         const size = data.length;
         data.forEach(
             async (file, index) => {
