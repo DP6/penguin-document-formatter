@@ -5,7 +5,7 @@ exports.saveFile = function (name, data) {
         //console.log('Salvando o arquivo', name);
 
         // Exclui parâmetros pegos errôneamente do pdf
-        let fineKeys = ['Evento', 'virtualPageview', 'eventCategory', 'eventAction', 'eventLabel', 'id', 'name', 'category', 'list', 'position', 'price', 'brand', 'availability', 'pagePath', 'pageCategory', 'pageType', 'userId', 'email', 'clientType', 'namePromotion', 'namePromocao', 'nameBanner', 'step', 'item_id', 'item_name', 'creative_name'];
+        let fineKeys = ['Evento', 'id', 'name', 'category', 'list', 'position', 'price', 'brand', 'availability', 'namePromotion', 'nameBanner', 'step', 'item_id', 'item_name', 'item_category', 'item_brand', 'item_list', 'creative_name', 'creative_slot', 'store', 'shipping', 'revenue', 'coupon', 'shippingType', 'paymentType', 'quantity', 'dimension3', 'dimension4', 'virtualPageview', 'pagePath', 'pageCategory', 'pageType', 'userId', 'email', 'clientType'];
         data.events.forEach(event => {
             for (let key in event) {
                 if (!fineKeys.includes(key)) {
