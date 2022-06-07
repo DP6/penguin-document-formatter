@@ -1,4 +1,3 @@
-const { get } = require('./firestore');
 const sendData = require('./hub');
 
 exports.extractEvents = extractEventsFromJson;

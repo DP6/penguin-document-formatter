@@ -13,7 +13,7 @@ function formatEvents(events, info) {
             pagename: pagepath,
             ...metadata
         }]
-        eventos = eventos.filter(({ Evento: name }) => name == 'Interaction').map(({ Evento: eventType, ...params }) => {
+        eventos = eventos.filter(({ Evento: name }) => (name == 'Interaction' || name == 'Non-Interaction')).map(({ Evento: eventType, ...params }) => {
 
             let { eventCategory, eventAction, eventLabel } = params
 
@@ -47,7 +47,7 @@ function formatEnhancedEcommerce(events, info) {
         const metadata = getMetadata(info);
         let [pageview, ...eventos] = events;
         const [, pagepath] = Object.values(pageview);
-        const eec_events = ['promotionViews', 'promotionClicks', 'impressionViews', 'impressionClicks', 'productDetails', 'addToCart', 'checkout', 'removeFromCart', 'purchase'];
+        const eec_events = ['promotionViews', 'promotionClicks', 'impressionViews', 'impressionClicks', 'productDetails', 'addToCart', 'checkout', 'removeFromCart', 'purchase', 'view_item_list', 'select_content', 'add_to_cart', 'remove_from_cart', 'begin_checkout', 'checkout_progress'];
         let ecommerce = eventos.filter(
             ({ Evento: name }) => eec_events.includes(name))
             .map(({ Evento: eventType, ...params }) => {
@@ -57,9 +57,9 @@ function formatEnhancedEcommerce(events, info) {
                 delete params.eventLabel;
 
                 // Exclui parâmetros pegos errôneamente do pdf
-                let fineKeys = ['Evento', 'id', 'name', 'category', 'list', 'position', 'price', 'brand', 'availability', 'namePromotion', 'nameBanner', 'step', 'item_id', 'item_name', 'item_category', 'item_brand', 'item_list', 'creative_name', 'creative_slot', 'store', 'shipping', 'revenue', 'coupon', 'shippingType', 'paymentType', 'quantity', 'dimension3', 'dimension4'];
+                let fineKeys = ['Evento', 'id', 'name', 'category', 'list', 'position', 'price', 'brand', 'availability', 'namePromotion', 'nameBanner', 'step', 'item_id', 'item_name', 'item_category', 'item_brand', 'item_list', 'index', 'creative_name', 'creative_slot', 'store', 'shipping', 'revenue', 'coupon', 'shippingType', 'paymentType', 'quantity', 'index', 'checkout_step', 'transaction_id', 'affiliation', 'value', 'tax', 'item_list_name', 'accessAvailability', 'currency', 'content_type'];
                 for (let key in params) {
-                    if (!fineKeys.includes(key)) {
+                    if (!fineKeys.includes(key) && !key.startsWith('dimension')) {
                         delete params[key];
                     }
                 }
