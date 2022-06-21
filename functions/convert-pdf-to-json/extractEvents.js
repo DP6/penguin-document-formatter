@@ -66,7 +66,6 @@ function mergeRow(group, limit = 0.02) {
         const j = +i + 1;
         const next = group[j];
         let dif = next.x - item.x - item.text.length * size;
-        //console.log({ temp, item, dif });
         if (dif > limit) {
             copy.push(item);
             temp = null;
@@ -79,27 +78,18 @@ function mergeRow(group, limit = 0.02) {
     return copy;
 }
 
-function groupEvents(groups, pageNumber, nomeMapa, { eventTitle = "Evento", pageviewTitle = "(page|screen)(name|view)?$", parameters = 2, keyIndex = 0, valueIndex = 1, metadata = true }) {
+function groupEvents(groups, pageNumber, nomeMapa, { eventTitle = "Evento", pageviewTitle = "(page|screen)(name|view)?$", pageViewParameters = "virtualPagePath", parameters = 2, keyIndex = 0, valueIndex = 1, metadata = true }) {
 
     let newConfig = {
         eventTitle,
         pageviewTitle,
+        pageViewParameters,
         parameters,
         keyIndex,
         valueIndex,
         metadata
     };
-    /*teste mapa
-    newConfig = {
-        ...newConfig,
-        "eventTitle": "Evento|(Ação de E-commerce)|(DataLayer Event)",
-        "pageviewTitle": "(page|screen)(name|view)?$",
-        "parameters": 2,
-        "keyIndex": 0,
-        "valueIndex": 1,
-        "metadata": false
-    }/**/
-    console.log(newConfig)
+    // console.log(newConfig)
     try {
         let regex = /(V\d+)\s-\s(T\d+)/;
         let regexTitle = new RegExp(`^${newConfig.eventTitle}\$`, 'i');
@@ -123,39 +113,41 @@ function groupEvents(groups, pageNumber, nomeMapa, { eventTitle = "Evento", page
         };
         if (versao == 'VX' && newConfig.metadata) return { info, events: [] };
         let pageviewRegex = new RegExp([newConfig.pageviewTitle], 'i');
+        let pageViewParametersRegex = new RegExp([newConfig.pageViewParameters], 'i');
         groups = groups.map(group => {
-            group = mergeRow(group)
-
-            if (group[0].text.match(pageviewRegex)) {
-                let { x, y, text } = group[0];
-                let [event, path] = text.split(" ");
-                group = [
-                    { x, y, text: event },
-                    { x, y, text: path }
-                ]
-            }
+            group = mergeRow(group);
             return group;
         })
         groups = groups.filter(group => group.length == newConfig.parameters);
-        //console.log(groups);
         let index = groups.findIndex(group =>
             group.length > 1 &&
             (pageviewRegex.test(group[0].text) ||
                 pageviewRegex.test(group[1].text)));
         index = index === -1 ? 0 : index + 1;
-        let page = groups.slice(index).sort((a, b) => a[0].x - b[0].x);
+        let indexVirtual = groups.findLastIndex(group =>
+            group.length > 1 &&
+            (pageViewParametersRegex.test(group[0].text) ||
+                pageViewParametersRegex.test(group[1].text)));
+        indexVirtual = indexVirtual === -1 ? 0 : indexVirtual + 1;
+        let page = [], pageview = [];
+        if (indexVirtual == 0) {
+            page = groups.slice(index).sort((a, b) => a[0].x - b[0].x);
+            pageview = groups.slice(index - 1, index);
+        } else {
+            page = groups.slice(indexVirtual).sort((a, b) => a[0].x - b[0].x);
+            pageview = groups.slice(index - 1, indexVirtual);
+        }
+        if (pageview.length > 0) pageview = [[{ text: "Evento" }, { text: "page_view" }], ...pageview]
         let events = [], event = {};
-        if (index > 0) {
-            let row = groups[index - 1];
+        for (let item in pageview) {
+            let row = pageview[item];
             let { text: key } = row[newConfig.keyIndex];
-
             let { text: value } = row[newConfig.valueIndex];
-            events.push(
-                {
-                    [newConfig.eventTitle.split("|")[0]]: /page/i.test(key) ? "page_view" : "screenView",
-                    [key]: value
-                }
-            );
+            event[key] = value;
+            if (item == pageview.length - 1 && regexTitle.test(Object.keys(event)[0])) {
+                events.push(event);
+                event = {}
+            }
         }
         for (let item in page) {
             let row = page[item]
