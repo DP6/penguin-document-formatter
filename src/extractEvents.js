@@ -130,29 +130,16 @@ function groupEvents(groups, pageNumber, nomeMapa, { eventTitle = "Evento", page
             (pageViewParametersRegex.test(group[0].text) ||
                 pageViewParametersRegex.test(group[1].text)));
         indexVirtual = indexVirtual === -1 ? 0 : indexVirtual + 1;
-        let page = [];
+        let page = [], pageview = [];
         if (indexVirtual == 0) {
             page = groups.slice(index).sort((a, b) => a[0].x - b[0].x);
+            pageview = groups.slice(index - 1, index);
         } else {
             page = groups.slice(indexVirtual).sort((a, b) => a[0].x - b[0].x);
+            pageview = groups.slice(index - 1, indexVirtual);
         }
-        let pageview = groups.slice(index - 1, indexVirtual);
-        pageview = [[{ text: "Evento" }, { text: "pageView" }], ...pageview]
-        console.log('pageview', pageview);
-        // console.log('page', page);
+        if (pageview.length > 0) pageview = [[{ text: "Evento" }, { text: "page_view" }], ...pageview]
         let events = [], event = {};
-        // if (index > 0) {
-        //     let row = groups[index - 1];
-        //     let { text: key } = row[newConfig.keyIndex];
-
-        //     let { text: value } = row[newConfig.valueIndex];
-        //     events.push(
-        //         {
-        //             [newConfig.eventTitle.split("|")[0]]: /page/i.test(key) ? "page_view" : "screenView",
-        //             [key]: value
-        //         }
-        //     );
-        // }
         for (let item in pageview) {
             let row = pageview[item];
             let { text: key } = row[newConfig.keyIndex];
