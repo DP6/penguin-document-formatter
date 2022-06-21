@@ -1,6 +1,7 @@
 {
     "eventTitle": "Evento|(Ação de E-(c|C)ommerce)|(DataLayer Event)",
-    "pageviewTitle": "(virtualPageview|screenName)",
+    "pageviewTitle": "(virtualPageview|screenName|pagePath)",
+    "pageViewParameters": "virtualPagePath",
     "parameters": 2,
     "keyIndex": 0,
     "valueIndex": 1,
