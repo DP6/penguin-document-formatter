@@ -8,16 +8,6 @@ async function extractEventsFromJson(content, pageNumber, nomeMapa, config) {
         return { info, events };
     } catch (error) {
         console.error(error);
-        sendData(
-            {
-                code: "01-01",
-                spec: path,
-                description: "Erro ao extrair eventos do JSON",
-                payload: {
-                    error: error
-                }
-            }
-        );
     }
 }
 
@@ -124,7 +114,7 @@ function groupEvents(groups, pageNumber, nomeMapa, { eventTitle = "Evento", page
             (pageviewRegex.test(group[0].text) ||
                 pageviewRegex.test(group[1].text)));
         index = index === -1 ? 0 : index + 1;
-        let indexVirtual = groups.findLastIndex(group =>
+        let indexVirtual = groups.findIndex(group =>
             group.length > 1 &&
             (pageViewParametersRegex.test(group[0].text) ||
                 pageViewParametersRegex.test(group[1].text)));
@@ -165,16 +155,6 @@ function groupEvents(groups, pageNumber, nomeMapa, { eventTitle = "Evento", page
         return { info, events };
     } catch (error) {
         console.error(error);
-        sendData(
-            {
-                code: "01-01",
-                spec: path,
-                description: "Erro ao estruturar eventos do JSON",
-                payload: {
-                    error: error
-                }
-            }
-        );
     }
 }
 
