@@ -151,7 +151,7 @@ function groupEvents(groups, pageNumber, nomeMapa, { eventTitle = "Evento", page
             event[key] = value;
             if (item == page.length - 1 && regexTitle.test(Object.keys(event)[0])) events.push(event);
         }
-        console.log(events);
+        //console.log(events);
         return { info, events };
     } catch (error) {
         console.error(error);
