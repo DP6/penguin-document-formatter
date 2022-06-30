@@ -6,6 +6,7 @@ async function extractEventsFromJson(content, pageNumber, nomeMapa, config) {
     try {
         let groups = groupTexts(content);
         let { info, events } = groupEvents(groups, pageNumber, nomeMapa, config);
+        console.log(events);
         return { info, events };
     } catch (error) {
         console.error(error);

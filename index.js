@@ -19,7 +19,6 @@ async function main(argv) {
         let nomeMapa = file.split(".pdf")[0];
 
         const data = await pdfToJson(file);
-
         const files = saveAllFiles(file, data);
 
 

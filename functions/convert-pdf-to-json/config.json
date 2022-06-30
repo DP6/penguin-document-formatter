@@ -3,5 +3,6 @@
     "pageviewTitle": "(page|screen)(name|view)?$",
     "parameters": 2,
     "keyIndex": 0,
-    "valueIndex": 1
+    "valueIndex": 1,
+    "metadata": true
 }
